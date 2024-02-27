@@ -1,10 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Default from './pages/Default'
 // import React from 'react'
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-red-700">App</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+          <Route path='/' element={ <Default /> }></Route>
+      </Routes>
+    </BrowserRouter>    
   )
 }
 
