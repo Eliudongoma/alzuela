@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { UserSignUp } from "../components/interfaces/UserSignUp";
 import { Form, FormField, SubmitButton } from "../components/forms";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const initialValues: UserSignUp = {
   username: "",
@@ -31,6 +32,20 @@ function SignUp() {
     console.log(info);
     toast.info("Successfull signup!");
   };
+  const [formData, setFormData] = useState<UserSignUp>({
+    username: "",
+    password: "",
+    address: "",
+    phone: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({...formData, [e.target.value]: e.target.value});
+    console.log(formData)
+  }
 
   return (
     <>
@@ -51,17 +66,17 @@ function SignUp() {
             validationSchema={validationSchema}
           >
             <Flex>
-              <FormField name="firstname" />
-              <FormField name="lastname" />
+              <FormField name="firstname" onChange={handleChange} value={formData.firstname}/>
+              <FormField name="lastname" onChange={handleChange} value={formData.lastname}/>
             </Flex>
-            <FormField name="email" type="email" />
+            <FormField name="email" type="email" onChange={handleChange} value={formData.email}/>
             <Flex>
-              <FormField name="username" />
-              <FormField name="password" type="password" />
+              <FormField name="username" onChange={handleChange} value={formData.username}/>
+              <FormField name="password" type="password" onChange={handleChange} value={formData.password}/>
             </Flex>
             <Flex>
-              <FormField name="phone" type="number" />
-              <FormField name="address" />
+              <FormField name="phone" type="number" onChange={handleChange} value={formData.phone}/>
+              <FormField name="address" onChange={handleChange} value={formData.address}/>
             </Flex>
             <SubmitButton title="Create Account" />
           </Form>
