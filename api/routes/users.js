@@ -25,6 +25,12 @@ router.post("/", validator(validateUser), async (req, res) => {
     .send(_.pick(user, "-password"));
 });
 
+router.get("/", async (_req, res) => {
+  const users = await User.find({});
+
+  res.send(users);
+});
+
 router.get("/test", test);
 
 export default router;

@@ -19,7 +19,7 @@ mongoose
 const app = express();
 
 app.use(express.json());
-app.use("/api/user", users);
+app.use("/api/users", users);
 app.use("/api/auth", auth);
 
 app.use((err, req, res, next) => {
