@@ -2,7 +2,7 @@ import express from "express";
 import { test } from "../controllers/user.controller.js";
 
 import bcrypt from "bcrypt";
-import validator from "../middleware/validate";
+import validator from "../middlewares/validate.js";
 import User, { validateUser } from "../models/user.js";
 
 const router = express.Router();
