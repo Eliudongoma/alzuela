@@ -8,7 +8,7 @@ export const authTokenKey = "x-auth-token";
 export interface Headers extends HEADERS {}
 
 const apiClient = create({
-  baseURL: "someBackendUrl",
+  baseURL: "",
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
