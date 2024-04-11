@@ -1,9 +1,11 @@
-import { ApiResponse, create } from "apisauce";
+import { ApiResponse, create, HEADERS } from "apisauce";
 
 import auth from "./auth";
 import cache from "../utils/cache";
 
 export const authTokenKey = "x-auth-token";
+
+export interface Headers extends HEADERS {}
 
 const apiClient = create({
   baseURL: "someBackendUrl",
