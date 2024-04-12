@@ -1,9 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import cors from "cors"
+// import cors from "cors"
 import auth from "./routes/auth.js";
 import users from "./routes/users.js"; 
+import path from 'path'
 
 dotenv.config();
 const connectUri = process.env.MONGO;
@@ -18,10 +19,17 @@ mongoose
 
 const app = express();
 
-app.use(cors({
-  origin:"*",
-  methods:["GET", "POST", "PUT", "DELETE"]
-}))
+const __dirname = path.resolve();
+
+app.use(express.static(path.join(__dirname, 'client/dist')))
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
+
+// app.use(cors({
+//   origin:"http://localhost:3000",
+//   methods:["GET", "POST", "PUT", "DELETE"]
+// }))
 app.use(express.json());
 app.use("/api/users", users);
 app.use("/api/auth", auth);
