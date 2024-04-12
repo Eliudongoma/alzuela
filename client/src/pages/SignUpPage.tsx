@@ -16,20 +16,14 @@ import { authTokenKey, DataError, Headers } from "../services/client";
 const initialValues: UserSignUp = {
   username: "",
   password: "",
-  address: "",
-  phone: "",
-  firstname: "",
-  lastname: "",
+  name: "",
   email: "",
 };
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
   password: Yup.string().min(8).max(15).required().label("password"),
-  address: Yup.string().min(2).max(30).required().label("address"),
-  phone: Yup.string().min(10).max(10).required().label("phone"),
-  firstname: Yup.string().min(2).max(30).required().label("firstname"),
-  lastname: Yup.string().min(2).max(30).required().label("lastname"),
+  name: Yup.string().min(2).max(30).required().label("lastname"),
   email: Yup.string().min(2).max(30).required().label("email"),
 });
 
@@ -79,22 +73,12 @@ function SignUp() {
         <Form
           onSubmit={handleSubmit}
           initialValues={initialValues}
-          validationSchema={validationSchema}
-        >
+          validationSchema={validationSchema}>
           <ErrorMessage error={error} />
-          <Flex>
-            <FormField name="firstname" />
-            <FormField name="lastname" />
-          </Flex>
+          <FormField name="name" />
           <FormField name="email" type="email" />
-          <Flex>
-            <FormField name="username" />
-            <FormField name="password" type="password" />
-          </Flex>
-          <Flex>
-            <FormField name="phone" type="number" />
-            <FormField name="address" />
-          </Flex>
+          <FormField name="username" />
+          <FormField name="password" type="password" />
           <SubmitButton title="Create Account" isLoading={isLoading} />
         </Form>
       </Box>

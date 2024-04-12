@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 import auth from "./routes/auth.js";
-import users from "./routes/users.js";
+import users from "./routes/users.js"; 
 
 dotenv.config();
 const connectUri = process.env.MONGO;

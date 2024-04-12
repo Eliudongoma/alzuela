@@ -1,6 +1,5 @@
 import express from "express";
 import { test } from "../controllers/user.controller.js";
-
 import bcrypt from "bcrypt";
 import validator from "../middlewares/validate.js";
 import User, { validateUser } from "../models/user.js";
@@ -8,12 +7,12 @@ import User, { validateUser } from "../models/user.js";
 const router = express.Router();
 
 router.post("/", validator(validateUser), async (req, res) => {
-  const { password, name, username } = req.body;
+  const { password, names, username } = req.body;
   let user = await User.findOne({ username });
 
   if (user) return res.status(400).send({ error: "Username is already taken" });
 
-  user = new User({ name, username, password });
+  user = new User({ names, username, password });
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 
