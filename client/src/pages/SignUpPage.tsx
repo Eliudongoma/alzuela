@@ -3,7 +3,6 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 
-import { UserSignUp } from "../components/interfaces/UserSignUp";
 import {
   ErrorMessage,
   Form,
@@ -13,13 +12,6 @@ import {
 import { authApi, usersApi } from "../services";
 import { authTokenKey, DataError, Headers } from "../services/client";
 
-const initialValues: UserSignUp = {
-  username: "",
-  password: "",
-  name: "",
-  email: "",
-};
-
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
   password: Yup.string().min(8).max(15).required().label("password"),
@@ -28,6 +20,13 @@ const validationSchema = Yup.object().shape({
 });
 
 export type SignUpInfo = Yup.InferType<typeof validationSchema>;
+
+const initialValues: SignUpInfo = {
+  username: "",
+  password: "",
+  name: "",
+  email: "",
+};
 
 function SignUp() {
   const [error, setError] = useState("");
@@ -73,7 +72,8 @@ function SignUp() {
         <Form
           onSubmit={handleSubmit}
           initialValues={initialValues}
-          validationSchema={validationSchema}>
+          validationSchema={validationSchema}
+        >
           <ErrorMessage error={error} />
           <FormField name="name" />
           <FormField name="email" type="email" />
