@@ -15,6 +15,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "alzuela-v3": "file:..",
     "apisauce": "^3.0.1",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.25",
