@@ -4,9 +4,14 @@ import { Link } from "react-router-dom";
 
 function Info() {
   return (
-    <Box bg={'blue.100'} h={'20vh'} w={'100%'} >
-      <Flex justify={'center'} mx={'auto'} maxW={'70vw'} py={4}>
-        <Box px={5}>
+    <Box bg={'blue.100'} w={'100%'} >
+      <Flex 
+        justify={'center'} 
+        mx={'auto'} 
+        maxW={'70vw'} 
+        py={4} 
+        direction={{base: 'column', md: 'row'}}>
+        <Box px={{base: 0, md:5}}>
           <Heading fontSize={15}>Contact Information</Heading>
             <Box py={2}>
               <Text fontSize={16}><PhoneIcon/>+254 742-143-234</Text>
@@ -28,7 +33,7 @@ function Info() {
 
         </Box>
         <Spacer/>
-        <Box px={5}>
+        <Box px={{base: 0, md:5}}>
           <Heading fontSize={15}>Contact Information</Heading>
           <Link to={'/about'}>About</Link>
         </Box>
