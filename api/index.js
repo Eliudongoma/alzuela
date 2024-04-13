@@ -1,15 +1,23 @@
 import winston from "winston";
 import express from "express";
 import dotenv from "dotenv";
+import db from "./startup/db.js"
+import routes from "./startup/routes.js"
+import log from "./startup/logging.js"
+import production from "./startup/prod.js"
 
 dotenv.config();
 
 const app = express();
 
-require("./startup/logging.js")();
-require("./startup/db.js")();
-require("./startup/routes.js")(app);
-require("./startup/prod.js")(app);
+log();
+db();
+routes(app);
+production(app)
+// require("./startup/logging.js")();
+// require("./startup/db.js")();
+// require("./startup/routes.js")(app);
+// require("./startup/prod.js")(app);
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () =>
