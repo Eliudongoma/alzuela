@@ -1,6 +1,6 @@
 import winston from "winston";
-require("winston-mongodb");
-require("express-async-errors");
+import "winston-mongodb"
+import "express-async-errors"
 
 export default function () {
   new winston.Logger({
