@@ -4,7 +4,7 @@ import { SignUpInfo } from "../pages/SignUpPage";
 import authApi from "./auth";
 import client, { DataError } from "./client";
 
-export const endpoint = "/users";
+export const endpoint = "/auth/signup";
 
 const register = (info: SignUpInfo) => client.post(endpoint, info);
 

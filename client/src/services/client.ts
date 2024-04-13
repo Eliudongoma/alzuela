@@ -8,7 +8,7 @@ export const authTokenKey = "x-auth-token";
 export interface Headers extends HEADERS {}
 
 const apiClient = create({
-  baseURL: "https://alzuela.onrender.com/api",
+  baseURL: "/api",
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {

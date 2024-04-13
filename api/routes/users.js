@@ -1,5 +1,4 @@
 import express from "express";
-import { test } from "../controllers/user.controller.js";
 import bcrypt from "bcrypt";
 import validator from "../middlewares/validate.js";
 import User, { validateUser } from "../models/user.js";
@@ -29,7 +28,5 @@ router.get("/", async (_req, res) => {
 
   res.send(users);
 });
-
-router.get("/test", test);
 
 export default router;
