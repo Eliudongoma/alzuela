@@ -13,10 +13,10 @@ import { authApi, usersApi } from "../services";
 import { authTokenKey, DataError, Headers } from "../services/client";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().min(4).max(50).required().label("username"),
-  password: Yup.string().min(8).max(15).required().label("password"),
-  name: Yup.string().min(2).max(30).required().label("lastname"),
-  email: Yup.string().min(2).max(30).required().label("email"),
+  username: Yup.string().min(4).max(50).required().label("Username"),
+  password: Yup.string().min(8).max(15).required().label("Password"),
+  name: Yup.string().min(2).max(30).required().label("Name"),
+  email: Yup.string().min(2).max(30).required().label("Email"),
 });
 
 export type SignUpInfo = Yup.InferType<typeof validationSchema>;
