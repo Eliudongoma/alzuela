@@ -5,12 +5,11 @@ import authApi from "./auth";
 import client, { DataError } from "./client";
 
 export const signupEndpoint = "/auth/signup";
-export const signinEndpoint = "/auth/signin";
-export const endpoint = "/auth/signin";
+export const endpoint = "/auth";
 
 const register = (info: SignUpInfo) => client.post(signupEndpoint, info);
 
-const getUser = (userId: string) => client.get(`${signinEndpoint}/${userId}`);
+const getUser = (userId: string) => client.get(`${endpoint}/${userId}`);
 
 const getUsers = () => client.get(`${endpoint}`);
 

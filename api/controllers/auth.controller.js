@@ -23,31 +23,25 @@ export const signup = async (req, res, next) => {
   }  
 }
 export const signin =async (req, res, next) => {
-  const { username, password } = req.body;    
-
-  try{
+  
+    const { username, password } = req.body;
+    console.log(username)
     const validUser = await User.findOne({username});
-    if (!validUser){ 
-     return next(errorHandler(404, "Wrong credentials"));
-    }
+    if (!validUser)
+      return res.status(404).send("Wrong credentials");
+     
     const validPassword = bcryptjs.compareSync(password, validUser.password);
-    if (!validPassword) {
-     return next(errorHandler(404, "Wrong Credentials"));
-    }
-    // const loginDetails = new User({
-    //   username: validUser.username,
-    //   password: validUser.password
-    // })
-    // await loginDetails.sign();
-    // res.json("SignIn Successful")
-     const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
-     //const { password: pass, ...rest } = validUser._doc;
+    if (!validPassword)
+     return res.status(404).send("Wrong credentials");
+    try{
+    const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
+    const { password: pass, ...rest } = validUser._doc;
      res
-      .status(200)
-      .cookie('access_token', token, { httpOnly: true,})
-      .json("SignIn Successful");
-
-  }catch (err) {
-    next(err);
-  }
+     .status(200)
+     .cookie('access_token', token, { httpOnly: true})
+     .json(rest);
+    } catch (err){
+      next(err)
+    }
+ 
 }

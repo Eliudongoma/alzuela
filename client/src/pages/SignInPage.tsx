@@ -9,13 +9,15 @@ import {
   SubmitButton } from "../components/forms";
 
 import { useState } from "react";
-import { authApi, usersApi } from "../services";
-import { DataError, authTokenKey, Headers } from "../services/client";
+import { authApi } from "../services";
+import { DataError } from "../services/client";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().min(4).max(50).required().label("Username"),
-  password: Yup.string().min(6).required().label("Password"),
+  username: Yup.string().min(4).max(50).required().label("username"),
+  password: Yup.string().min(6).required().label("password"),
 });
 export type UserInfo = Yup.InferType<typeof validationSchema>;
 
@@ -27,31 +29,23 @@ const initialValues: UserInfo = {
 function SignInPage() {
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
-  const loginUser = async (username: string) => {
+  const loginUser = async (info: UserInfo) => {
     setLoading(true);
-    const response = await usersApi.getUser(username);
+    const response = await authApi.login(info);
     setLoading(false);
     return response;
-    
   };
 
-  const handleSubmit = async (info: UserInfo) => {
-    
-    setError("");
-    const { ok, data, problem, headers } = await loginUser(info.username);
-
+  const handleSubmit = async (info: UserInfo) => {    
+    setError("");    
+   const { data, ok, problem } = await loginUser(info);
     if (!ok){
-      return setError((data as DataError)?.error || problem);
+      return setError((data as DataError)?.error || problem || "");      
     }
     toast("Login Successful");
-    loginWithJwt(headers);
-    window.location.href = "/"
-  }
-
-  const loginWithJwt = (headers: Headers | undefined) => {
-    const jwt = headers?.[authTokenKey];
-    if( jwt) authApi.loginWithJwt(jwt)
+    navigate("/");
   }
 
   return (

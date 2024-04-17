@@ -11,6 +11,7 @@ import {
 } from "../components/forms";
 import { authApi, usersApi } from "../services";
 import { authTokenKey, DataError, Headers } from "../services/client";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("Username"),
@@ -31,6 +32,7 @@ const initialValues: SignUpInfo = {
 function SignUp() {
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const registerUser = async (info: SignUpInfo) => {
     setLoading(true);
@@ -54,7 +56,7 @@ function SignUp() {
 
     toast("You're now a member!");
     loginWithJwt(headers);
-    window.location.href = "/";
+    navigate("/");
   };
 
   return (
