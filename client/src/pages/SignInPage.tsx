@@ -7,14 +7,15 @@ import {
   FormField, 
   FormLink, 
   SubmitButton } from "../components/forms";
-
-import { useState } from "react";
+  import  { signInSuccess, signInFailure, signInStart, userReducer } from "../redux/user/userSlice";
 import { authApi } from "../services";
-import { DataError } from "../services/client";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-
+import { useDispatch, useSelector } from "react-redux";
+interface LoginResponse {
+  success: boolean,
+  message: string,  
+}
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
   password: Yup.string().min(6).required().label("password"),
@@ -27,25 +28,23 @@ const initialValues: UserInfo = {
 }
 
 function SignInPage() {
-  const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => (state as userReducer))
+  console.log(error)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const loginUser = async (info: UserInfo) => {
-    setLoading(true);
-    const response = await authApi.login(info);
-    setLoading(false);
-    return response;
-  };
-
   const handleSubmit = async (info: UserInfo) => {    
-    setError("");    
-   const { data, ok, problem } = await loginUser(info);
-    if (!ok){
-      return setError((data as DataError)?.error || problem || "");      
-    }
-    toast("Login Successful");
-    navigate("/");
+    dispatch(signInStart());
+    const response = await authApi.login(info); 
+    const data = await response.data as LoginResponse;
+    if(data && data.success === false){
+      dispatch(signInFailure(data.message))
+    }  
+    if(response.ok){
+      dispatch(signInSuccess(response.data));
+      toast("Login Successful");
+      navigate("/");
+    }  
   }
 
   return (
@@ -69,7 +68,7 @@ function SignInPage() {
           <ErrorMessage error={error}/>
           <FormField name="username" />
           <FormField name="password" type="password" />
-          <SubmitButton bg="blue.100" mb={3} title="Login"  isLoading = {isLoading}/>
+          <SubmitButton bg="blue.100" mb={3} title="Login"  isLoading = {loading}/>
           <Flex justify="space-between">
             <FormLink label="Forgot Password?" route="/forgotPassword" />
             <FormLink label="Create an account!" route="/signup" />

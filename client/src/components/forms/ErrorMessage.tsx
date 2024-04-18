@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 
 interface Props {
-  error?: string;
+  error?: string | null;
   visible?: boolean;
 }
 

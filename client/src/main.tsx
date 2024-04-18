@@ -1,15 +1,18 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { store, persistor } from "./redux/store.ts";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import App from "./App.tsx";
 import theme from "./theme.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <PersistGate persistor={persistor}>
+  <Provider store={store}>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -17,5 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </ChakraProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </Provider>
+  </PersistGate>
 );

@@ -1,7 +1,7 @@
 import User from "../models/user.js"
 import bcryptjs from 'bcryptjs'
-import { errorHandler } from "../utils/error.js";
 import jwt from 'jsonwebtoken';
+import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
   const { name, username, email, password } = req.body;
@@ -24,24 +24,21 @@ export const signup = async (req, res, next) => {
 }
 export const signin =async (req, res, next) => {
   
+  try{
     const { username, password } = req.body;
-    console.log(username)
+
     const validUser = await User.findOne({username});
-    if (!validUser)
-      return res.status(404).send("Wrong credentials");
+    if (!validUser || !bcryptjs.compareSync(password, validUser.password))
+      return next(errorHandler(404, "Invalid credentials"));  
      
-    const validPassword = bcryptjs.compareSync(password, validUser.password);
-    if (!validPassword)
-     return res.status(404).send("Wrong credentials");
-    try{
     const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
     const { password: pass, ...rest } = validUser._doc;
      res
      .status(200)
      .cookie('access_token', token, { httpOnly: true})
      .json(rest);
-    } catch (err){
-      next(err)
+    } catch (error){
+      res.status(500).json({ message: "Internal Server Error" });
     }
  
 }
