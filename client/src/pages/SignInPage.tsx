@@ -32,7 +32,6 @@ const initialValues: LoginDetails = {
 
 function SignInPage() {
   const { loading, error } = useSelector((state: IRootState) => (state.user))
-  console.log(error)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -49,7 +48,6 @@ function SignInPage() {
       navigate("/");
     }  
   }
-
   return (
     <Flex 
       justify={"center"} 

@@ -2,7 +2,7 @@ import client from "./client";
 import { LoginDetails } from "../pages/SignInPage";
 import { UserInfo } from "firebase/auth";
 
-const tokenKey = "token";
+const tokenKey = import.meta.env.JWT_SECRET;
 
 const getJwt = () => localStorage.getItem(tokenKey);
 
@@ -19,7 +19,6 @@ const googleLogin = async (info: UserInfo) => {
   if (ok) loginWithJwt(data as string);
 
   return { data, ok, problem };
-
 }
 
 const logout = () => localStorage.removeItem(tokenKey);

@@ -1,20 +1,29 @@
-import { Box, Flex, Image, Text, Icon, Switch } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, Icon, Switch} from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { BiUser } from "react-icons/bi";
-import { GoSignIn, GoSignOut } from "react-icons/go";
+import { BiMailSend, BiUser } from "react-icons/bi";
+import { GoPersonFill, GoSignIn, GoSignOut } from "react-icons/go";
 
 import { MenuContent } from "./common";
 import { Item } from "./common/SelectorMenuList";
 import { SearchBar } from ".";
 import { useAppColorMode, useCart } from "../hooks";
 import logo from "../assets/logo1.svg";
+import { useSelector } from "react-redux";
+import { IRootState  } from "../redux/store";
+import { authApi } from "../services";
 
 function Header() {
   const { isDarkMode, toggleColorMode } = useAppColorMode();
   const cart = useCart();
-  const navigate = useNavigate();
 
+  const handleSignOut = () => {
+    authApi.logout()
+  }
+
+  const navigate = useNavigate();
+  const { currentUser }= useSelector((state: IRootState) => state.user)
+  
   const controls: Item[] = [
     { label: "Sign In", icon: <GoSignIn />, route: "/signin" },
     { label: "Sign Up", icon: <GoSignOut />, route: "/signup" },
@@ -22,6 +31,14 @@ function Header() {
       label: isDarkMode ? "Dark Mode" : "Light Mode",
       icon: <Switch size="sm" isChecked={isDarkMode} />,
       onClick: () => toggleColorMode(),
+    },
+  ];
+  const userControls: Item[] =[
+    {label: (currentUser ? currentUser.name : "Username"), icon: <GoPersonFill/>},
+    {label: (currentUser ? currentUser.email : "Email"), icon: <BiMailSend/>},
+    {label: "Profile", icon: <BiUser/>, route:"/profile"},
+    { label: "Sign out", icon: <GoSignOut />, 
+      onClick: () => handleSignOut(),
     },
   ];
 
@@ -53,13 +70,19 @@ function Header() {
             />
           </Link>
         </Box>
-        <SearchBar />
-        <Box mr={10} display="flex">
+        <SearchBar />           
+        
+        { currentUser ? (
+          <Box mr={10} display="flex">      
           <MenuContent
-            Button={<BiUser size={20} />}
-            data={controls}
-            onSelectItem={handleItemSelection}
-          />
+              Button={
+                <Image 
+                  src={currentUser.profilePicture}
+                  boxSize={30} 
+                  rounded={30}/>}
+              data={userControls}
+              onSelectItem={handleItemSelection}
+            />
           <Box>
             {cart.count ? (
               <>
@@ -92,6 +115,48 @@ function Header() {
             ) : null}
           </Box>
         </Box>
+        ) : 
+        (<Box mr={10} display="flex">        
+        
+          <MenuContent
+              Button={<BiUser size={20} />}
+              data={controls}
+              onSelectItem={handleItemSelection}
+            />
+          <Box>
+            {cart.count ? (
+              <>
+                <Link to={"/cart"}>
+                  <Icon
+                    as={FaShoppingCart}
+                    color={"white"}
+                    px={2}
+                    h={"auto"}
+                    w={"auto"}
+                    boxSize={10}
+                    _hover={{ cursor: "pointer" }}
+                  />
+                </Link>
+                <Text
+                  bg={"blue.300"}
+                  color={"white"}
+                  w={6}
+                  h={6}
+                  align={"center"}
+                  border={14}
+                  borderRadius={18}
+                  position={"fixed"}
+                  mt={"-14"}
+                  ml={"6"}
+                >
+                  {cart.count}
+                </Text>
+              </>
+            ) : null}
+          </Box>
+        </Box>
+        )}
+         
       </Flex>
     </Box>
   );
