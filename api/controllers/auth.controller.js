@@ -23,22 +23,49 @@ export const signup = async (req, res, next) => {
   }  
 }
 export const signin =async (req, res, next) => {
+  const { username, password } = req.body;
   
   try{
-    const { username, password } = req.body;
-
     const validUser = await User.findOne({username});
     if (!validUser || !bcryptjs.compareSync(password, validUser.password))
       return next(errorHandler(404, "Invalid credentials"));  
      
-    const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
-    const { password: pass, ...rest } = validUser._doc;
-     res
-     .status(200)
-     .cookie('access_token', token, { httpOnly: true})
-     .json(rest);
+    createToken(validUser, res)
     } catch (error){
-      res.status(500).json({ message: "Internal Server Error" });
+      next(error);
+    } 
+}
+
+function createToken (user, res){
+  const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+  const { password: pass, ...rest } = user._doc;
+  res
+    .status(200)
+    .cookie('access_token', token, { httpOnly: true})
+    .json(rest);
+}
+
+export const google = async (req, res, next) => {
+  const { email, displayName, photoURL } = req.body;
+
+  try{
+    const user = await User.findOne({ email });
+    if(user) createToken(user, res)
+    else {
+      const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
+      const newUser = new User({
+        name: displayName,
+        username: displayName.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        profilePicture: photoURL
+      });
+      await newUser.save();
+      createToken(newUser, res);
     }
- 
+  }catch (error){
+    next(error);
+  }
 }

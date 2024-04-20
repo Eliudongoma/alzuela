@@ -6,12 +6,14 @@ import {
   Form, 
   FormField, 
   FormLink, 
-  SubmitButton } from "../components/forms";
-  import  { signInSuccess, signInFailure, signInStart, userReducer } from "../redux/user/userSlice";
+  SubmitButton,
+  OAuth } from "../components/forms";
+  import  { signInSuccess, signInFailure, signInStart } from "../redux/user/userSlice";
 import { authApi } from "../services";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { IRootState } from "../redux/store";
 interface LoginResponse {
   success: boolean,
   message: string,  
@@ -20,20 +22,20 @@ const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
   password: Yup.string().min(6).required().label("password"),
 });
-export type UserInfo = Yup.InferType<typeof validationSchema>;
+export type LoginDetails = Yup.InferType<typeof validationSchema>;
 
-const initialValues: UserInfo = {
+const initialValues: LoginDetails = {
   username : "",
   password: ""
 }
 
 function SignInPage() {
-  const { loading, error } = useSelector((state) => (state as userReducer))
+  const { loading, error } = useSelector((state: IRootState) => (state.user))
   console.log(error)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (info: UserInfo) => {    
+  const handleSubmit = async (info: LoginDetails) => {    
     dispatch(signInStart());
     const response = await authApi.login(info); 
     const data = await response.data as LoginResponse;
@@ -68,7 +70,8 @@ function SignInPage() {
           <ErrorMessage error={error}/>
           <FormField name="username" />
           <FormField name="password" type="password" />
-          <SubmitButton bg="blue.100" mb={3} title="Login"  isLoading = {loading}/>
+          <SubmitButton bg="blue.100" mb={3} title="Sign in"  isLoading = {loading}/>
+          <OAuth bg="blue.100" mb={3} title="Sign in with Google"  isLoading = {loading}/>
           <Flex justify="space-between">
             <FormLink label="Forgot Password?" route="/forgotPassword" />
             <FormLink label="Create an account!" route="/signup" />

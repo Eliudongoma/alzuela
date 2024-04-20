@@ -18,6 +18,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "alzuela-v3": "file:..",
     "apisauce": "^3.0.1",
+    "firebase": "^10.11.0",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.25",
     "react": "^18.2.0",
