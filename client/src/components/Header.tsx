@@ -9,20 +9,21 @@ import { Item } from "./common/SelectorMenuList";
 import { SearchBar } from ".";
 import { useAppColorMode, useCart } from "../hooks";
 import logo from "../assets/logo1.svg";
-import { useSelector } from "react-redux";
-import { IRootState  } from "../redux/store";
-import { authApi } from "../services";
+import { useContext } from "react";
+import { UserContext } from "../contexts";
+import useUsers from "../hooks/useUsers";
 
 function Header() {
   const { isDarkMode, toggleColorMode } = useAppColorMode();
   const cart = useCart();
+  const {logout } = useUsers();
 
   const handleSignOut = () => {
-    authApi.logout()
+    logout()
   }
 
   const navigate = useNavigate();
-  const { currentUser }= useSelector((state: IRootState) => state.user)
+  const { currentUser } = useContext(UserContext)
   
   const controls: Item[] = [
     { label: "Sign In", icon: <GoSignIn />, route: "/signin" },

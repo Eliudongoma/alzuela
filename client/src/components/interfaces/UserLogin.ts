@@ -1,4 +1,6 @@
-export interface UserLogin{
+export default interface UserLogin{
+  name: string;
   username: string;
-  password: string;
+  email: string;
+  profilePicture: string;
 }

@@ -4,8 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import { CartPage, HomePage, AboutPage, SignInPage, SignUpPage, ProductPage } from "./pages";
 import { Header } from "./components";
 import { Product}  from "./components/interfaces/Product";
-import { ProductsContext } from "./contexts";
+import { ProductsContext, UserContext } from "./contexts";
 import CartContext, { CartProducts } from "./contexts/CartContext";
+import UserLogin from "./components/interfaces/UserLogin";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,9 +14,11 @@ function App() {
     count: 0,
     ids: {},
   });
+  const [currentUser, setCurrentUser] = useState<UserLogin | null>(null)
 
   return (
     <>
+    <UserContext.Provider value={ { currentUser, setCurrentUser}}>
       <CartContext.Provider value={{ cartProducts, setCartProducts }}>
         <Header />
         <Box>
@@ -27,11 +30,11 @@ function App() {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/product/:productId" element={<ProductPage />} />
-
             </Routes>
           </ProductsContext.Provider>
         </Box>
       </CartContext.Provider>
+      </UserContext.Provider>
     </>
   );
 }

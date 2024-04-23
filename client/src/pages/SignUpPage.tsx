@@ -83,7 +83,7 @@ function SignUp() {
           <FormField name="username" />
           <FormField name="password" type="password" />
           <SubmitButton title="Create Account" isLoading={isLoading} />
-          <OAuth bg="blue.100" mb={3} title="Sign in with Google"  isLoading = {isLoading}/>          
+          <OAuth bg="blue.100" mb={3} title="Signup with Google"  isLoading = {isLoading}/>          
         </Form>
       </Box>
     </Flex>

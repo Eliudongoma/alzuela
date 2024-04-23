@@ -1,24 +1,16 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import * as Yup from "yup";
-
 import { 
   ErrorMessage, 
   Form, 
   FormField, 
   FormLink, 
+  OAuth, 
   SubmitButton,
-  OAuth } from "../components/forms";
-  import  { signInSuccess, signInFailure, signInStart } from "../redux/user/userSlice";
-import { authApi } from "../services";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { IRootState } from "../redux/store";
+   } from "../components/forms";
+import useUsers from "../hooks/useUsers";
+import { useState } from "react";
 
-interface LoginResponse {
-  success: boolean,
-  message: string,  
-}
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
   password: Yup.string().min(6).required().label("password"),
@@ -31,23 +23,15 @@ const initialValues: LoginDetails = {
 }
 
 function SignInPage() {
-  const { loading, error } = useSelector((state: IRootState) => (state.user))
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const handleSubmit = async (info: LoginDetails) => {    
-    dispatch(signInStart());
-    const response = await authApi.login(info); 
-    const data = await response.data as LoginResponse;
-    if(data && data.success === false){
-      dispatch(signInFailure(data.message))
-    }  
-    if(response.ok){
-      dispatch(signInSuccess(response.data));
-      toast("Login Successful");
-      navigate("/");
-    }  
+  const {error, login} = useUsers()
+  const handleSubmit = async (info: LoginDetails) => { 
+    setLoading(true);
+    await login(info);
+    setLoading(false);
   }
+
   return (
     <Flex 
       justify={"center"} 
@@ -70,7 +54,7 @@ function SignInPage() {
           <FormField name="username" />
           <FormField name="password" type="password" />
           <SubmitButton bg="blue.100" mb={3} title="Sign in"  isLoading = {loading}/>
-          <OAuth bg="blue.100" mb={3} title="Sign in with Google"  isLoading = {loading}/>
+          <OAuth bg="blue.100" mb={3} title="Sign in with Google"/>
           <Flex justify="space-between">
             <FormLink label="Forgot Password?" route="/forgotPassword" />
             <FormLink label="Create an account!" route="/signup" />

@@ -8,7 +8,7 @@ interface ProductsContextValue {
 }
 
 export const ProductsContext = createContext<ProductsContextValue>({
-  products: [],
+  products: [], 
   setProducts: () => {},
 });
 

@@ -3,7 +3,7 @@ import { createContext } from "react";
 export interface CartProducts {
   count: number; // no of products in cart
   ids: { [id: string]: number }; // { cartProductId: quantity }
-}
+} 
 
 export interface Cart {
   cartProducts: CartProducts;
