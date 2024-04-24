@@ -18,7 +18,7 @@ export default (app) => {
 
   app.use("/api/users", users);
   app.use("/api/auth", auth);
-  app.use("/api/test", test);
+  app.use("/api/test", user);
 
   app.use((err, req, res) => {
     const statusCode = err.statusCode || 500;
