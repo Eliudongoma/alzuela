@@ -12,7 +12,7 @@ const getJwt = () => localStorage.getItem(tokenKey);
 const loginWithJwt = (jwt: string) => localStorage.setItem(tokenKey, jwt);
 
 const login = async (info: LoginDetails) => {
-  const { data, ok, problem } = await client.post("/auth/signin", info);
+  const { data, ok, problem } = await client.post("/auth", info);
   if (ok) loginWithJwt(data as string);
 
   return { data, ok, problem };

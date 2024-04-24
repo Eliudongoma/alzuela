@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
+
 import {
   ErrorMessage,
   Form,
@@ -8,23 +11,29 @@ import {
   OAuth,
   SubmitButton,
 } from "../components/forms";
-import useUsers from "../hooks/useUsers";
-import { useState } from "react";
+import { authApi } from "../services";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
   password: Yup.string().min(6).required().label("password"),
 });
+
 export type LoginDetails = Yup.InferType<typeof validationSchema>;
 
 function SignInPage() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const { error, login } = useUsers();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (info: LoginDetails) => {
+    setError("");
     setLoading(true);
-    await login(info);
+    const res = await authApi.login(info);
     setLoading(false);
+
+    if (!res.ok) return setError(res.problem || "Login failed");
+
+    toast.success("You're signed in");
+    window.location.href = "/";
   };
 
   return (

@@ -37,9 +37,8 @@ const useUsers = () => {
 
   async function manageData(response: Response) {
     const data = (await response.data) as LoginResponse;
-    if (data && data.success === false) {
-      return setError(data.message);
-    }
+    if (!data?.success) return setError(data.message);
+
     if (response.ok) {
       setCurrentUser(response.data as User);
       localStorage.setItem("currentUser", JSON.stringify(response.data));
@@ -52,6 +51,7 @@ const useUsers = () => {
     const response = await authApi.googleLogin(info);
     manageData(response);
   };
+
   const logout = () => {
     localStorage.removeItem("currentUser");
     authApi.logout();
