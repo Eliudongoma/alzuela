@@ -4,7 +4,7 @@ import path from "path";
 
 import auth from "../routes/auth.js";
 import users from "../routes/users.js";
-import test from "../routes/test.js";
+import user from "../routes/user.js";
 
 const __dirname = path.resolve();
 
@@ -18,7 +18,7 @@ export default (app) => {
 
   app.use("/api/users", users);
   app.use("/api/auth", auth);
-  app.use("/api/test", test);
+  app.use("/api/test", user);
 
   app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
