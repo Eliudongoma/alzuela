@@ -23,13 +23,6 @@ const validationSchema = Yup.object().shape({
 
 export type SignUpInfo = Yup.InferType<typeof validationSchema>;
 
-const initialValues: SignUpInfo = {
-  username: "",
-  password: "",
-  name: "",
-  email: "",
-};
-
 function SignUp() {
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -74,7 +67,7 @@ function SignUp() {
         <Heading mb={2}>Sign Up</Heading>
         <Form
           onSubmit={handleSubmit}
-          initialValues={initialValues}
+          initialValues={{ username: "", password: "", name: "", email: "" }}
           validationSchema={validationSchema}
         >
           <ErrorMessage error={error} />
@@ -83,7 +76,12 @@ function SignUp() {
           <FormField name="username" />
           <FormField name="password" type="password" />
           <SubmitButton title="Create Account" isLoading={isLoading} />
-          <OAuth bg="blue.100" mb={3} title="Signup with Google"  isLoading = {isLoading}/>          
+          <OAuth
+            bg="blue.100"
+            mb={3}
+            title="Signup with Google"
+            isLoading={isLoading}
+          />
         </Form>
       </Box>
     </Flex>

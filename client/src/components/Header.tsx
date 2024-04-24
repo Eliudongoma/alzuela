@@ -1,50 +1,70 @@
-import { Box, Flex, Image, Text, Icon, Switch} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Flex, Image, Switch } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
 import { BiMailSend, BiUser } from "react-icons/bi";
 import { GoPersonFill, GoSignIn, GoSignOut } from "react-icons/go";
 
-import { MenuContent } from "./common";
 import { Item } from "./common/SelectorMenuList";
+import { MenuContent } from "./common";
 import { SearchBar } from ".";
-import { useAppColorMode, useCart } from "../hooks";
+import { useAppColorMode } from "../hooks";
+import auth from "../services/auth";
 import logo from "../assets/logo1.svg";
-import { useContext } from "react";
-import { UserContext } from "../contexts";
+import ShoppingCartIcon from "./cart/Icon";
 import useUsers from "../hooks/useUsers";
 
+const authenticationControls: Item[] = [
+  { label: "Sign In", icon: <GoSignIn />, route: "/signin" },
+  { label: "Sign Up", icon: <GoSignOut />, route: "/signup" },
+];
+
 function Header() {
+  const currentUser = auth.getCurrentUser();
+  const [controls, setControls] = useState<Item[]>([]);
   const { isDarkMode, toggleColorMode } = useAppColorMode();
-  const cart = useCart();
-  const {logout } = useUsers();
-
-  const handleSignOut = () => {
-    logout()
-  }
-
+  const { logout } = useUsers();
   const navigate = useNavigate();
-  const { currentUser } = useContext(UserContext)
-  
-  const controls: Item[] = [
-    { label: "Sign In", icon: <GoSignIn />, route: "/signin" },
-    { label: "Sign Up", icon: <GoSignOut />, route: "/signup" },
+
+  useEffect(() => {
+    initControls();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser?.name, controls.length]);
+
+  const initControls = () => {
+    const base = [
+      {
+        label: isDarkMode ? "Dark Mode" : "Light Mode",
+        icon: <Switch size="sm" isChecked={isDarkMode} />,
+        onClick: () => toggleColorMode(),
+      },
+    ];
+
+    setControls([
+      ...(currentUser ? authenticatedControls : authenticationControls),
+      ...base,
+    ]);
+  };
+
+  const handleSignOut = () => logout();
+
+  const authenticatedControls: Item[] = [
     {
-      label: isDarkMode ? "Dark Mode" : "Light Mode",
-      icon: <Switch size="sm" isChecked={isDarkMode} />,
-      onClick: () => toggleColorMode(),
+      label: currentUser?.name || "Username",
+      icon: <GoPersonFill />,
     },
-  ];
-  const userControls: Item[] =[
-    {label: (currentUser ? currentUser.name : "Username"), icon: <GoPersonFill/>},
-    {label: (currentUser ? currentUser.email : "Email"), icon: <BiMailSend/>},
-    {label: "Profile", icon: <BiUser/>, route:"/profile"},
-    { label: "Sign out", icon: <GoSignOut />, 
-      onClick: () => handleSignOut(),
-    },
+    { label: currentUser?.email || "Email", icon: <BiMailSend /> },
+    { label: "Profile", icon: <BiUser />, route: "/profile" },
+    { label: "Sign out", icon: <GoSignOut />, onClick: () => handleSignOut() },
   ];
 
   const handleItemSelection = (item: Item) =>
     item.route ? navigate(item.route) : item.onClick?.();
+
+  const Avatar = currentUser?.profilePicture ? (
+    <Image src={currentUser.profilePicture} boxSize={30} rounded={30} />
+  ) : (
+    <BiUser size={18} />
+  );
 
   return (
     <Box
@@ -59,7 +79,7 @@ function Header() {
     >
       <Flex align={"center"} justify={"space-between"} w={"100%"} h={"100%"}>
         <Box>
-          <Link to={"/"}>
+          <Link to="/">
             <Image
               src={logo}
               alt="logo"
@@ -71,93 +91,15 @@ function Header() {
             />
           </Link>
         </Box>
-        <SearchBar />           
-        
-        { currentUser ? (
-          <Box mr={10} display="flex">      
+        <SearchBar />
+        <Box mr={10} display="flex">
           <MenuContent
-              Button={
-                <Image 
-                  src={currentUser.profilePicture}
-                  boxSize={30} 
-                  rounded={30}/>}
-              data={userControls}
-              onSelectItem={handleItemSelection}
-            />
-          <Box>
-            {cart.count ? (
-              <>
-                <Link to={"/cart"}>
-                  <Icon
-                    as={FaShoppingCart}
-                    color={"white"}
-                    px={2}
-                    h={"auto"}
-                    w={"auto"}
-                    boxSize={10}
-                    _hover={{ cursor: "pointer" }}
-                  />
-                </Link>
-                <Text
-                  bg={"blue.300"}
-                  color={"white"}
-                  w={6}
-                  h={6}
-                  align={"center"}
-                  border={14}
-                  borderRadius={18}
-                  position={"fixed"}
-                  mt={"-14"}
-                  ml={"6"}
-                >
-                  {cart.count}
-                </Text>
-              </>
-            ) : null}
-          </Box>
+            Button={Avatar}
+            data={controls}
+            onSelectItem={handleItemSelection}
+          />
+          <ShoppingCartIcon />
         </Box>
-        ) : 
-        (<Box mr={10} display="flex">        
-        
-          <MenuContent
-              Button={<BiUser size={20} />}
-              data={controls}
-              onSelectItem={handleItemSelection}
-            />
-          <Box>
-            {cart.count ? (
-              <>
-                <Link to={"/cart"}>
-                  <Icon
-                    as={FaShoppingCart}
-                    color={"white"}
-                    px={2}
-                    h={"auto"}
-                    w={"auto"}
-                    boxSize={10}
-                    _hover={{ cursor: "pointer" }}
-                  />
-                </Link>
-                <Text
-                  bg={"blue.300"}
-                  color={"white"}
-                  w={6}
-                  h={6}
-                  align={"center"}
-                  border={14}
-                  borderRadius={18}
-                  position={"fixed"}
-                  mt={"-14"}
-                  ml={"6"}
-                >
-                  {cart.count}
-                </Text>
-              </>
-            ) : null}
-          </Box>
-        </Box>
-        )}
-         
       </Flex>
     </Box>
   );
