@@ -1,15 +1,15 @@
-import { createContext } from 'react';
-import UserLogin from '../components/interfaces/UserLogin'
+import { createContext } from "react";
+import User from "../components/interfaces/UserLogin";
 
 interface CurrentUser {
-  currentUser: UserLogin | null;
-  setCurrentUser: (currentUser: UserLogin) => void;
+  currentUser: User | null;
+  setCurrentUser: (currentUser: User) => void;
 }
 
 export const CurrentUserContext = createContext<CurrentUser>({
   currentUser: null,
   setCurrentUser: () => {},
-})
+});
 
 CurrentUserContext.displayName = "Users Context";
 

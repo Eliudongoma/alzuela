@@ -1,16 +1,14 @@
-
 export const test = (req, res) => {
-  res.json({message: "API is working very well"})
+  res.json({ message: "API is working very well" });
 };
 
 export const signout = (req, res, next) => {
-  try{
+  try {
     res
-      .clearCookie('access_token')
+      .clearCookie("access_token")
       .status(200)
-      .json('User has been signed out');
-  }catch(error){
+      .json("User has been signed out");
+  } catch (error) {
     next(error);
   }
-}
-
+};

@@ -1,24 +1,30 @@
 import { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
-import { CartPage, HomePage, AboutPage, SignInPage, SignUpPage, ProductPage } from "./pages";
+import {
+  CartPage,
+  HomePage,
+  AboutPage,
+  SignInPage,
+  SignUpPage,
+  ProductPage,
+} from "./pages";
 import { Header } from "./components";
-import { Product}  from "./components/interfaces/Product";
+import { Product } from "./components/interfaces/Product";
 import { ProductsContext, UserContext } from "./contexts";
 import CartContext, { CartProducts } from "./contexts/CartContext";
-import UserLogin from "./components/interfaces/UserLogin";
+import User from "./components/interfaces/UserLogin";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [cartProducts, setCartProducts] = useState<CartProducts>({
     count: 0,
     ids: {},
   });
-  const [currentUser, setCurrentUser] = useState<UserLogin | null>(null)
 
   return (
-    <>
-    <UserContext.Provider value={ { currentUser, setCurrentUser}}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       <CartContext.Provider value={{ cartProducts, setCartProducts }}>
         <Header />
         <Box>
@@ -34,8 +40,7 @@ function App() {
           </ProductsContext.Provider>
         </Box>
       </CartContext.Provider>
-      </UserContext.Provider>
-    </>
+    </UserContext.Provider>
   );
 }
 
