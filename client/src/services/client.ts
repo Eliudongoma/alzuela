@@ -13,7 +13,6 @@ const apiClient = create({
 
 apiClient.addAsyncRequestTransform(async (request) => {
   const authToken = auth.getJwt();
-
   if (authToken && request.headers) request.headers[authTokenKey] = authToken;
 });
 

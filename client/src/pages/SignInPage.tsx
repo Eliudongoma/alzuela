@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 import {
@@ -12,6 +12,10 @@ import {
   SubmitButton,
 } from "../components/forms";
 import { authApi } from "../services";
+import { useNavigate } from "react-router-dom";
+// import useUsers from "../hooks/useUsers";
+import { DataError, Headers, authTokenKey } from "../services/client";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().min(4).max(50).required().label("username"),
@@ -21,20 +25,44 @@ const validationSchema = Yup.object().shape({
 export type LoginDetails = Yup.InferType<typeof validationSchema>;
 
 function SignInPage() {
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null >(null);
+  // const { error } = useUsers();
+  const navigate = useNavigate();
+
+  const loginUser = async (info: LoginDetails) => {
+    setLoading(true);
+    const response = await authApi.login(info);
+    setLoading(false);
+
+    return response;
+  };
+
+  const loginWithJwt = (headers: Headers | undefined) => {
+    const jwt = headers?.[authTokenKey];
+    if (jwt) authApi.loginWithJwt(jwt);
+  };
 
   const handleSubmit = async (info: LoginDetails) => {
     setError("");
-    setLoading(true);
-    const res = await authApi.login(info);
-    setLoading(false);
+    const { ok, data, problem, headers } = await loginUser(info);
+    
+    if (!ok) return setError((data as DataError)?.error || problem);
 
-    if (!res.ok) return setError(res.problem || "Login failed");
-
-    toast.success("You're signed in");
-    window.location.href = "/";
+    toast("You're now a member!");
+    loginWithJwt(headers);
+    navigate("/");
   };
+
+  // const handleSubmit = async (info: LoginDetails) => {
+  //   try{
+  //     setLoading(true);
+  //     await login(info);
+  //     setLoading(false);
+  //   }catch (error){
+  //     console.log(error)
+  //   }
+  // };
 
   return (
     <Flex justify={"center"} align={"center"} mt={"160px"}>
@@ -45,8 +73,7 @@ function SignInPage() {
         padding={6}
         boxShadow={"lg"}
         bg={"gray.600"}
-        h={"auto"}
-      >
+        h={"auto"}>
         <Heading mb={2}>Login</Heading>
         <Form
           onSubmit={handleSubmit}

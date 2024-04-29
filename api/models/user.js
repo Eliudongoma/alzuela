@@ -51,7 +51,7 @@ schema.methods.generateAuthToken = function () {
       name: this.name,
       username: this.username,
     },
-    process.env.jwtPrivateKey
+    process.env.JWT_SECRET
   );
 };
 

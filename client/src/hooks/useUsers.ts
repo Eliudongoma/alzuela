@@ -43,6 +43,7 @@ const useUsers = () => {
       setCurrentUser(response.data as User);
       localStorage.setItem("currentUser", JSON.stringify(response.data));
       toast.success("Login Successful");
+      // window.location.href = '/'
       navigate("/");
     }
   }

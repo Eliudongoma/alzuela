@@ -24,6 +24,7 @@ function Header() {
   const { isDarkMode, toggleColorMode } = useAppColorMode();
   const { logout } = useUsers();
   const navigate = useNavigate();
+  console.log(currentUser)
 
   useEffect(() => {
     initControls();

@@ -1,14 +1,14 @@
 // For signing in user
+import Joi from 'joi';
+import bcrypt from 'bcrypt';
+import express from 'express';
+import User from '../models/user.js';
+// import auth from '../middlewares/auth';
+import validator from '../middlewares/validate.js'
 
-const Joi = require("joi");
-const bcrypt = require("bcrypt");
-const express = require("express");
 const router = express.Router();
 
-const { User } = require("../models/user");
-const auth = require("../middleware/auth");
-const service = require("../services/users");
-const validator = require("../middleware/validate");
+// const service = require("../services/users");
 
 router.post("/", validator(validate), async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
@@ -22,18 +22,18 @@ router.post("/", validator(validate), async (req, res) => {
   if (!isValidPassword)
     return res.status(400).send({ error: "Invalid username and/or password." });
 
-  const token = user.generateAuthToken();
+  const token = user.generateAuthToken(); 
   res.send(token);
 });
 
-router.get("/token", auth, async (req, res) => {
-  const user = await service.findById(req.user._id);
+// router.get("/token", auth, async (req, res) => {
+//   const user = await service.findById(req.user._id);
 
-  if (!user)
-    return res.status(404).send({ error: "You don't exist on the database" });
+//   if (!user)
+//     return res.status(404).send({ error: "You don't exist on the database" });
 
-  res.send(user.generateAuthToken());
-});
+//   res.send(user.generateAuthToken());
+// });
 
 function validate(req) {
   return Joi.object({
@@ -42,4 +42,5 @@ function validate(req) {
   }).validate(req);
 }
 
-module.exports = router;
+export default router;
+// module.exports = router;

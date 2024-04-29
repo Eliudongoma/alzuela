@@ -45,7 +45,6 @@ function SignUp() {
   const handleSubmit = async (info: SignUpInfo) => {
     setError("");
     const { ok, data, problem, headers } = await registerUser(info);
-
     if (!ok) return setError((data as DataError)?.error || problem);
 
     toast("You're now a member!");
@@ -79,9 +78,7 @@ function SignUp() {
           <OAuth
             bg="blue.100"
             mb={3}
-            title="Signup with Google"
-            isLoading={isLoading}
-          />
+            title="Signup with Google"/>
         </Form>
       </Box>
     </Flex>
