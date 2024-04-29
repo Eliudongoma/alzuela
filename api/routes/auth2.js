@@ -1,14 +1,12 @@
-// For signing in user
-import Joi from 'joi';
-import bcrypt from 'bcrypt';
-import express from 'express';
-import User from '../models/user.js';
-// import auth from '../middlewares/auth';
-import validator from '../middlewares/validate.js'
+import Joi from "joi";
+import bcrypt from "bcrypt";
+import express from "express";
 
 const router = express.Router();
 
-// const service = require("../services/users");
+import { User } from "../models/user";
+import auth from "../middlewares/auth";
+import validator from "../middlewares/validate";
 
 router.post("/", validator(validate), async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
@@ -26,14 +24,13 @@ router.post("/", validator(validate), async (req, res) => {
   res.send(token);
 });
 
-// router.get("/token", auth, async (req, res) => {
-//   const user = await service.findById(req.user._id);
+router.get("/token", auth, async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user)
+    return res.status(404).send({ error: "You don't exist on the database" });
 
-//   if (!user)
-//     return res.status(404).send({ error: "You don't exist on the database" });
-
-//   res.send(user.generateAuthToken());
-// });
+  res.send(user.generateAuthToken());
+});
 
 function validate(req) {
   return Joi.object({
