@@ -2,9 +2,9 @@ import cors from "cors";
 import express from "express";
 import path from "path";
 
-import auth from "../routes/auth";
-import users from "../routes/users";
-import user from "../routes/test";
+import auth from "../routes/auth.js";
+import users from "../routes/users.js";
+import user from "../routes/user.js";
 
 const __dirname = path.resolve();
 
