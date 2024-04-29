@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import path from "path";
 
-import auth from "../routes/auth2";
+import auth from "../routes/auth";
 import users from "../routes/users";
 import user from "../routes/test";
 
