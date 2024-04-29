@@ -4,7 +4,7 @@ import path from "path";
 
 import auth from "../routes/auth2";
 import users from "../routes/users";
-import test from "../routes/test";
+import user from "../routes/test";
 
 const __dirname = path.resolve();
 
