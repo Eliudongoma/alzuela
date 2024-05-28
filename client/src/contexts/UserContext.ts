@@ -3,7 +3,7 @@ import User from "../components/interfaces/UserLogin";
 
 interface CurrentUser {
   currentUser: User | null;
-  setCurrentUser: (currentUser: User) => void;
+  setCurrentUser: (currentUser: User | null) => void;
 }
 
 export const CurrentUserContext = createContext<CurrentUser>({

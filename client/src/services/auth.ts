@@ -35,7 +35,7 @@ const getCurrentUser = () => {
     const jwt = getJwt();   
    
     if (jwt) {
-      const user: User | null = jwtDecode(jwt);     
+      const user: User | null = jwtDecode(tokenKey);     
       return user;
     }
   } catch (error) {

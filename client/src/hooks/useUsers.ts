@@ -37,11 +37,11 @@ const useUsers = () => {
 
   async function manageData(response: Response) {
     const data = (await response.data) as LoginResponse;
-    if (!data?.success) return setError(data.message);
+    if (data?.success) return setError(data.message);
 
     if (response.ok) {
       setCurrentUser(response.data as User);
-      localStorage.setItem("currentUser", JSON.stringify(response.data));
+      localStorage.setItem("currentUser", JSON.stringify(response.data)); 
       toast.success("Login Successful");
       // window.location.href = '/'
       navigate("/");
@@ -55,7 +55,9 @@ const useUsers = () => {
 
   const logout = () => {
     localStorage.removeItem("currentUser");
+    setCurrentUser(null);
     authApi.logout();
+    window.location.href ='/';
   };
   return { error, currentUser, login, googleLogin, logout };
 };

@@ -8,7 +8,7 @@ import { Item } from "./common/SelectorMenuList";
 import { MenuContent } from "./common";
 import { SearchBar } from ".";
 import { useAppColorMode } from "../hooks";
-import auth from "../services/auth";
+// import auth from "../services/auth";
 import logo from "../assets/logo1.svg";
 import ShoppingCartIcon from "./cart/Icon";
 import useUsers from "../hooks/useUsers";
@@ -19,12 +19,12 @@ const authenticationControls: Item[] = [
 ];
 
 function Header() {
-  const currentUser = auth.getCurrentUser();
+  const {currentUser} = useUsers()
   const [controls, setControls] = useState<Item[]>([]);
   const { isDarkMode, toggleColorMode } = useAppColorMode();
   const { logout } = useUsers();
   const navigate = useNavigate();
-  console.log(currentUser)
+  // console.log(currentUser)
 
   useEffect(() => {
     initControls();
@@ -54,7 +54,7 @@ function Header() {
       icon: <GoPersonFill />,
     },
     { label: currentUser?.email || "Email", icon: <BiMailSend /> },
-    { label: "Profile", icon: <BiUser />, route: "/profile" },
+    { label: "Profile", icon: <BiUser />, route: "/dashboard" },
     { label: "Sign out", icon: <GoSignOut />, onClick: () => handleSignOut() },
   ];
 

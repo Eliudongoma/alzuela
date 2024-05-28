@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 import { CartTotal } from "../components";
@@ -10,22 +10,23 @@ function CartPage() {
 
   if (products.length)
     return (
-      <Box mt={"90px"} ml={"20px"}>
-        <Flex justify={"center"}>
+      <Box mt={"90px"} ml={"20px"} mr={{base: "20px"}}>
+        <Flex justify={"center"} align={"center"} direction={{base: 'column-reverse', md: 'row'}}>
           <Flex
-            maxW="700px"
             bg="gray.200"
             border="2px"
             borderColor="gray.300"
-            borderRadius="10px"
-            flexDirection="column"
-          >
+            flexDirection={"column"}
+            borderRadius="10px">
             {products.map((product) => (
-              <CartProduct product={product} key={product._id} />
+              <>
+                <CartProduct product={product} key={product._id} />              
+                <Divider w={"100%"} />
+              </>
             ))}
           </Flex>
           <CartTotal/>
-        </Flex>
+        </Flex>       
       </Box>
     );
 

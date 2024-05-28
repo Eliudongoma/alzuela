@@ -7,26 +7,24 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useCart } from "../hooks";
-// import { useState } from "react";
-// import { CartProduct } from "../hooks/useCart";
 
 function CartTotal({ ...otherProps }: FlexProps) {
   const cart = useCart();
-  // const [products, setProducts] = useState<CartProduct>();  
   const items = cart.getProducts().length;
   const total = cart.getGrandTotal();
 
   return (
     <Flex
       bg={"gray.100"}
-      w={"350px"}
+      w={{base:"80%", md:"350px"}}
       flexDirection={"column"}
       p={2}
       fontSize={"20px"}
-      h={"270px"}
+      h={"300px"}
       boxShadow={"lg"}
       color={"gray.500"}
-      ml={20}
+      ml={{base:0, md:20}}
+      mb={{base:5, md:0}}
       borderColor={"gray.300"}
       borderRadius={"10px"}
       {...otherProps}

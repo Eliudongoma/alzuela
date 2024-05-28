@@ -8,8 +8,9 @@ import {
   SignInPage,
   SignUpPage,
   ProductPage,
+  Dashboard,
 } from "./pages";
-import { Header } from "./components";
+import { Header, PrivateRoutes } from "./components";
 import { Product } from "./components/interfaces/Product";
 import { ProductsContext, UserContext } from "./contexts";
 import CartContext, { CartProducts } from "./contexts/CartContext";
@@ -35,6 +36,9 @@ function App() {
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route element={<PrivateRoutes />} >
+                <Route path="/dashboard" element={<Dashboard />} />
+              </Route>
               <Route path="/product/:productId" element={<ProductPage />} />
             </Routes>
           </ProductsContext.Provider>
