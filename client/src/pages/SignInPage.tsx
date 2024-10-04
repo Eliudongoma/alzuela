@@ -56,15 +56,10 @@ function SignInPage() {
   // };
 
   const handleSubmit = async (info: LoginDetails) => {
-    try{
-      setLoading(true);
-      await login(info);
-      setLoading(false);
-    }catch (error){
-      console.error(error)
-    }
+    setLoading(true);
+    await login(info);
+    setLoading(false);   
   };
-
   return (
     <Flex justify={"center"} align={"center"} mt={"160px"}>
       <Box

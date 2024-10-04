@@ -4,6 +4,7 @@ function About() {
   return (
     <Box h={"100%"} mt={"72px"}>
       <Heading>About Alzuela</Heading>
+      <Heading>About Alzuela</Heading>
     </Box>
   );
 }

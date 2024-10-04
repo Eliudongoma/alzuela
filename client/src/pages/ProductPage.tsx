@@ -15,9 +15,12 @@ function ProductPage() {
     <Box mt={"90px"}>
       <Flex
         justify={"center"}
+        align={"center"}
         maxW={"700px"}
         mx={"auto"}
         p={2}
+        // background={"gray.50"}
+        direction={{base: 'column', md: 'row'}}
         boxShadow={"lg"}
         borderColor="gray.300"
         borderRadius="10px"
@@ -28,7 +31,7 @@ function ProductPage() {
         <Flex p={2} px={5} justify={"center"} flexDir={"column"}>
           <Heading>{product.name}</Heading>
           <Text>{product.description}</Text>
-          <Heading mt={"40px"} fontSize={"25px"} mb={5}>
+          <Heading mt={"30px"} fontSize={"25px"} mb={5}>
             KSH {product?.price}
           </Heading>
           <Button productId={product._id} />

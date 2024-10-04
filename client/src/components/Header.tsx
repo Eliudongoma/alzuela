@@ -54,7 +54,7 @@ function Header() {
       icon: <GoPersonFill />,
     },
     { label: currentUser?.email || "Email", icon: <BiMailSend /> },
-    { label: "Profile", icon: <BiUser />, route: "/dashboard" },
+    { label: "Profile", icon: <BiUser />, route: "/dashboard?tab=Profile" },
     { label: "Sign out", icon: <GoSignOut />, onClick: () => handleSignOut() },
   ];
 
