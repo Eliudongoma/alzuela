@@ -36,9 +36,11 @@ const useUsers = () => {
   };
 
   async function manageData(response: Response) {
-    const data = (await response.data) as LoginResponse;
-    if (data?.success) return setError(data.message);
+    const data =  response.data as LoginResponse;
 
+    if (!data.success) 
+      return setError(data.message);
+    
     if (response.ok) {
       setCurrentUser(response.data as User);
       localStorage.setItem("currentUser", JSON.stringify(response.data)); 

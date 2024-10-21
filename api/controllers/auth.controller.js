@@ -24,13 +24,12 @@ export const signup = async (req, res, next) => {
 }
 export const signin =async (req, res, next) => {
   const { username, password } = req.body;
-  
   try{
     const validUser = await User.findOne({username});
     if (!validUser || !bcryptjs.compareSync(password, validUser.password))
-      return next(errorHandler(404, "Invalid credentials"));  
+      return next(errorHandler(400, "Invalid credentials"));
      
-    createToken(validUser, res)
+    createToken(validUser, res);
     } catch (error){
       next(error);
     } 

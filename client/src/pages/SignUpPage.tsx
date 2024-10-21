@@ -7,7 +7,7 @@ import {
   ErrorMessage,
   Form,
   FormField,
-  OAuth,
+  // OAuth,
   SubmitButton,
 } from "../components/forms";
 import { authApi, usersApi } from "../services";
@@ -75,10 +75,10 @@ function SignUp() {
           <FormField name="username" />
           <FormField name="password" type="password" />
           <SubmitButton title="Create Account" isLoading={isLoading} />
-          <OAuth
+          {/* <OAuth
             bg="blue.100"
             mb={3}
-            title="Signup with Google"/>
+            title="Signup with Google"/> */}
         </Form>
       </Box>
     </Flex>

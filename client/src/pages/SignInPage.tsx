@@ -8,7 +8,7 @@ import {
   Form,
   FormField,
   FormLink,
-  OAuth,
+  // OAuth,
   SubmitButton,
 } from "../components/forms";
 // import { authApi } from "../services";
@@ -85,7 +85,7 @@ function SignInPage() {
             title="Sign in"
             isLoading={loading}
           />
-          <OAuth bg="blue.100" mb={3} title="Sign in with Google" />
+          {/* <OAuth bg="blue.100" mb={3} title="Sign in with Google" /> */}
           <Flex justify="space-between">
             <FormLink label="Forgot Password?" route="/forgotPassword" />
             <FormLink label="Create an account!" route="/signup" />

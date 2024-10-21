@@ -10,7 +10,7 @@ const ErrorMessage = ({ error, visible }: Props) => {
     return (
       <Text color="red.600" fontSize="sm" mt={0.5}>
         {error}
-      </Text>
+      </Text>      
     );
 
   return null;
